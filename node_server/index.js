@@ -5,7 +5,7 @@ const { Pool } = require("pg");
 const app = express();
 const port = 3000;
 
-const {agregarPost, obtenerPosts} = require('./consultas.js');
+const {agregarPost, obtenerPosts, like, eliminarPost} = require('./consultas.js');
 
 
 // Servidor encendido
@@ -20,17 +20,34 @@ app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static("public"));
+ 
 
-//get 
+//Get 
 app.get("/posts", async (req, res) => {
     const posts = await obtenerPosts()
     res.json(posts)
     })
 
 
-//post 
+//Post 
 app.post("/posts", async (req, res) => {
     const { titulo, img, descripcion, likes } = req.body
     await agregarPost(titulo, img, descripcion, likes)
     res.send("Post agregado con éxito")
     })
+
+
+//Put
+app.put("/posts/:id", async (req, res) => {
+  const { id } = req.params
+  await like(id)
+  res.send("Like modificado con éxito")
+  })
+
+
+// Delete
+app.delete("/posts/:id", async (req, res) => {
+  const { id } = req.params
+  await eliminarPost(id)
+  res.send("Post eliminado con éxito")
+  })

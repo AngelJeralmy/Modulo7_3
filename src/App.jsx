@@ -11,9 +11,14 @@ function App() {
   const [descripcion, setDescripcion] = useState("");
   const [posts, setPosts] = useState([]);
 
+
+
+
+  // Primera parte Likeme
   const getPosts = async () => {
     const { data: posts } = await axios.get(urlBaseServer + "/posts");
-    setPosts([...posts]);
+    const newPosts = posts.sort((a, b) => a.id - b.id);
+    setPosts([...newPosts]);
   };
 
   const agregarPost = async () => {
@@ -21,18 +26,26 @@ function App() {
     await axios.post(urlBaseServer + "/posts", post);
     getPosts();
   };
+  // Fin primera parte likeme
 
-  // este método se utilizará en el siguiente desafío
+
+
+
+
+  //Inicio segunda parte likeme
   const like = async (id) => {
-    await axios.put(urlBaseServer + `/posts/like/${id}`);
+    await axios.put(urlBaseServer + `/posts/${id}`);
     getPosts();
   };
 
-  // este método se utilizará en el siguiente desafío
   const eliminarPost = async (id) => {
     await axios.delete(urlBaseServer + `/posts/${id}`);
     getPosts();
   };
+  // Fin segunda parte likeme
+
+
+
 
   useEffect(() => {
     getPosts();
