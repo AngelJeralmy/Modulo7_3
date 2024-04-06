@@ -22,7 +22,7 @@ app.use(express.static("public"));
 const pool = new Pool({
   host: "localhost",
   user: "postgres",
-  password: "angel",
+  password: "",
   database: "likeme",
   allowExitOnIdle: true,
 });
